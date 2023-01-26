@@ -1,26 +1,17 @@
 package com.alinab.taskOneGOFpatterns.behavioral.chainOfResponsibility;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@AllArgsConstructor
+@Getter
 public class Numbers {
 
-    private final int numberOne;
-    private final int numberTwo;
-    private final String calculationRequest;
+    int numberOne;
+    int numberTwo;
+    String calculationRequest;
 
-    public Numbers(int numberOne, int numberTwo, String calculationRequest) {
-        this.numberOne = numberOne;
-        this.numberTwo = numberTwo;
-        this.calculationRequest = calculationRequest;
-    }
-
-    public int getNumberOne() {
-        return numberOne;
-    }
-
-    public int getNumberTwo() {
-        return numberTwo;
-    }
-
-    public String getCalculationRequest() {
-        return calculationRequest;
-    }
 }

@@ -1,18 +1,20 @@
 package com.alinab.taskOneGOFpatterns.behavioral.mediator;
 
 import com.alinab.taskOneGOFpatterns.behavioral.mediator.users.User;
+import lombok.AccessLevel;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MyTextChat implements TextChat {
 
-    private final List<User> users = new ArrayList<>();
-    private User administrator;
+    final List<User> users = new ArrayList<>();
 
-    public void setAdministrator(User administrator) {
-        this.administrator = administrator;
-    }
+    @Setter
+    User administrator;
 
     public void addOrdinaryUserToChat(User user) {
         this.users.add(user);

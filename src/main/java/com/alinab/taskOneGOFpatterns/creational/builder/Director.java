@@ -1,20 +1,15 @@
 package com.alinab.taskOneGOFpatterns.creational.builder;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
 public class Director {
 
+    @Setter
+    @Getter
     private BuildingBuilder builder;
-
-    public Director(BuildingBuilder builder) {
-        this.builder = builder;
-    }
-
-    public void setBuilder(BuildingBuilder builder) {
-        this.builder = builder;
-    }
-
-    public BuildingBuilder getBuilder() {
-        return builder;
-    }
 
     Building buildBuilding() {
         builder.createBuilding();

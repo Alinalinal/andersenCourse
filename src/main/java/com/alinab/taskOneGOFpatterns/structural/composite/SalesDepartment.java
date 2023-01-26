@@ -1,12 +1,11 @@
 package com.alinab.taskOneGOFpatterns.structural.composite;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class SalesDepartment implements Department {
 
     private String name;
-
-    public SalesDepartment(String name) {
-        this.name = name;
-    }
 
     @Override
     public void printDepartmentSpecialization() {

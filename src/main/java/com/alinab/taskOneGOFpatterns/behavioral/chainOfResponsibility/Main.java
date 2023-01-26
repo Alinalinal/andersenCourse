@@ -12,7 +12,7 @@ public class Main {
         handler2.setNextHandler(handler3);
         handler3.setNextHandler(handler4);
 
-        Numbers request1 = new Numbers(3, 2, "sub");
+        Numbers request1 = new Numbers(3, 2, "-");
         handler1.calculate(request1);
 
         Numbers request2 = new Numbers(3, 2, "doThis");

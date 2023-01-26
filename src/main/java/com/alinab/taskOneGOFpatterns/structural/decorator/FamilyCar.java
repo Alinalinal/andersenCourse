@@ -1,6 +1,7 @@
 package com.alinab.taskOneGOFpatterns.structural.decorator;
 
 public class FamilyCar extends CarDecorator {
+
     public FamilyCar(Car car) {
         super(car);
     }

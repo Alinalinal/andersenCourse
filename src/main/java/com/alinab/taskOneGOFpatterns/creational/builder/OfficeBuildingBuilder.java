@@ -1,6 +1,7 @@
 package com.alinab.taskOneGOFpatterns.creational.builder;
 
 public class OfficeBuildingBuilder extends BuildingBuilder {
+
     @Override
     void buildAddress() {
         building.setAddress("Some office address");
@@ -8,7 +9,7 @@ public class OfficeBuildingBuilder extends BuildingBuilder {
 
     @Override
     void buildBuildingType() {
-        building.setHouseType(BuildingType.OFFICE);
+        building.setBuildingType(BuildingType.OFFICE);
     }
 
     @Override

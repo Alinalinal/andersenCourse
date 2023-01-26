@@ -1,17 +1,20 @@
 package com.alinab.taskOneGOFpatterns.behavioral.chainOfResponsibility;
 
+import lombok.AccessLevel;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MultiplyNumbersHandler implements Handler {
 
-    private Handler nextHandler;
+    static final String MULTIPLY = "*";
 
-    @Override
-    public void setNextHandler(Handler nextHandler) {
-        this.nextHandler = nextHandler;
-    }
+    @Setter
+    Handler nextHandler;
 
     @Override
     public void calculate(Numbers request) {
-        if (request.getCalculationRequest().equals("mult")) {
+        if (MULTIPLY.equals(request.getCalculationRequest())) {
             System.out.println(request.getNumberOne() + " * " + request.getNumberTwo() + " = "
                     + (request.getNumberOne() * request.getNumberTwo()));
         } else {

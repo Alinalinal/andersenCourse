@@ -1,24 +1,21 @@
 package com.alinab.taskOneGOFpatterns.behavioral.mediator.users;
 
 import com.alinab.taskOneGOFpatterns.behavioral.mediator.TextChat;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class OrdinaryUser implements User {
 
-    private final TextChat textChat;
-    private String name;
+    final TextChat textChat;
 
-    public OrdinaryUser(TextChat textChat, String name) {
-        this.textChat = textChat;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Getter
+    @Setter
+    String name;
 
     @Override
     public void sendMessage(String textMessage) {

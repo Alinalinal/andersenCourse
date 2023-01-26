@@ -8,7 +8,7 @@ import com.alinab.taskOneGOFpatterns.creational.factoryMethod.designers.Interior
 public class DesignerFactory {
 
     public Designer createDesigner(DesignerType designerType) {
-        Designer designer = null;
+        Designer designer;
 
         switch (designerType) {
             case GRAPHICAL_DESIGNER:
@@ -17,6 +17,8 @@ public class DesignerFactory {
             case INTERIOR_DESIGNER:
                 designer = new InteriorDesigner();
                 break;
+            default:
+                throw new IllegalArgumentException("No such type of designers!");
         }
 
         return designer;

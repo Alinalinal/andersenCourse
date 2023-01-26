@@ -14,5 +14,7 @@ public class Main {
 
         Designer interiorDesigner = designerFactory.createDesigner(DesignerType.INTERIOR_DESIGNER);
         interiorDesigner.createSketch();
+
+        Designer industrialDesigner = designerFactory.createDesigner(DesignerType.INDUSTRIAL_DESIGNER);
     }
 }

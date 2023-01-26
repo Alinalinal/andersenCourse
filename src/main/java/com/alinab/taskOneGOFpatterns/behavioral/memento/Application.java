@@ -1,11 +1,17 @@
 package com.alinab.taskOneGOFpatterns.behavioral.memento;
 
+import lombok.AccessLevel;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
+
 import java.util.Date;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
 public class Application {
 
-    private String version;
-    private Date date;
+    String version;
+    Date date;
 
     public void setVersionAndDate(String version) {
         this.version = version;
@@ -19,13 +25,5 @@ public class Application {
     public void load(Save save) {
         version = save.getVersion();
         date = save.getDate();
-    }
-
-    @Override
-    public String toString() {
-        return "Application{" +
-                "version='" + version + '\'' +
-                ", date=" + date +
-                '}';
     }
 }

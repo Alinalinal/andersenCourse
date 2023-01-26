@@ -9,7 +9,7 @@ public class PrivateBuildingBuilder extends BuildingBuilder {
 
     @Override
     void buildBuildingType() {
-        building.setHouseType(BuildingType.PRIVATE);
+        building.setBuildingType(BuildingType.PRIVATE);
     }
 
     @Override

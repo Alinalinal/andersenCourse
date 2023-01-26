@@ -1,16 +1,20 @@
 package com.alinab.taskOneGOFpatterns.behavioral.chainOfResponsibility;
 
-public class SubtractNumbersHandler implements Handler {
-    private Handler nextHandler;
+import lombok.AccessLevel;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
-    @Override
-    public void setNextHandler(Handler nextHandler) {
-        this.nextHandler = nextHandler;
-    }
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class SubtractNumbersHandler implements Handler {
+
+    static final String SUBTRACT = "-";
+
+    @Setter
+    Handler nextHandler;
 
     @Override
     public void calculate(Numbers request) {
-        if (request.getCalculationRequest().equals("sub")) {
+        if (SUBTRACT.equals(request.getCalculationRequest())) {
             System.out.println(request.getNumberOne() + " - " + request.getNumberTwo() + " = "
                     + (request.getNumberOne() - request.getNumberTwo()));
         } else {

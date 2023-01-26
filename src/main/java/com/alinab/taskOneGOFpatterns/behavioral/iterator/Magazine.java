@@ -1,30 +1,19 @@
 package com.alinab.taskOneGOFpatterns.behavioral.iterator;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@Getter
+@Setter
 public class Magazine implements Collection {
 
-    private String title;
-    private String[] articles;
-
-    public Magazine(String title, String[] articles) {
-        this.title = title;
-        this.articles = articles;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String[] getArticles() {
-        return articles;
-    }
-
-    public void setArticles(String[] articles) {
-        this.articles = articles;
-    }
+    String title;
+    String[] articles;
 
     @Override
     public Iterator getIterator() {

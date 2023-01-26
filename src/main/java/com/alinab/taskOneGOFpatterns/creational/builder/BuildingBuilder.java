@@ -1,6 +1,10 @@
 package com.alinab.taskOneGOFpatterns.creational.builder;
 
+import lombok.Getter;
+
 public abstract class BuildingBuilder {
+
+    @Getter
     Building building;
 
     void createBuilding() {
@@ -12,8 +16,4 @@ public abstract class BuildingBuilder {
     abstract void buildBuildingType();
 
     abstract void buildFloors();
-
-    Building getBuilding() {
-        return building;
-    }
 }
