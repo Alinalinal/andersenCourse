@@ -1,4 +1,4 @@
-package com.alinab.taskTwoCollections.arrayList;
+package com.alinab.taskTwoCollections.queue;
 
 public interface SimpleQueue<E> {
 

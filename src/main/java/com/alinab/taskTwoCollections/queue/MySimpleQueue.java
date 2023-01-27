@@ -1,4 +1,6 @@
-package com.alinab.taskTwoCollections.arrayList;
+package com.alinab.taskTwoCollections.queue;
+
+import com.alinab.taskTwoCollections.queue.SimpleQueue;
 
 public class MySimpleQueue<E> implements SimpleQueue<E> {
 
