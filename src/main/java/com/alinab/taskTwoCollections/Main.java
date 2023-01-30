@@ -1,4 +1,4 @@
-package com.alinab;
+package com.alinab.taskTwoCollections;
 
 public class Main {
 

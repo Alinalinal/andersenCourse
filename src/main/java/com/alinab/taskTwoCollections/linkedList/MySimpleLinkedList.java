@@ -233,7 +233,7 @@ public class MySimpleLinkedList<E> implements SimpleLinkedList<E> {
         return sb.append('}').toString();
     }
 
-    private static class Node<E> {
+    static class Node<E> {
 
         E element;
         Node<E> prevNode;
