@@ -1,17 +1,23 @@
 package com.alinab.taskTwoCollections.hashMap;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+
 import java.util.Arrays;
 import java.util.Objects;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MySimpleHashMap<K, V> implements SimpleHashMap<K, V> {
 
-    private static final int DEFAULT_CAPACITY = 16;
-    private static final int STORAGE_EXPANSION_FACTOR = 2;
-    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    static final int DEFAULT_CAPACITY = 16;
+    static final int STORAGE_EXPANSION_FACTOR = 2;
+    static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    private Node<K, V>[] storage;
-    private float threshold;
-    private int size;
+    Node<K, V>[] storage;
+    float threshold;
+    int size;
 
     public MySimpleHashMap() {
         this(DEFAULT_CAPACITY);
@@ -27,23 +33,13 @@ public class MySimpleHashMap<K, V> implements SimpleHashMap<K, V> {
 
     @Override
     public V get(Object key) {
-        int bucket = countBucket((K) key);
-        Node<K, V> temp = storage[bucket];
-        if (temp != null) {
-            do {
-                K k = temp.getKey();
-                if (k == null || k.equals(key)) {
-                    return temp.getValue();
-                }
-                temp = temp.getNext();
-            } while (temp != null);
-        }
-        return null;
+        Node<K, V> node = getNode(key);
+        return node == null ? null : node.getValue();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        return get(key) != null;
+        return getNode(key) != null;
     }
 
     @Override
@@ -110,7 +106,7 @@ public class MySimpleHashMap<K, V> implements SimpleHashMap<K, V> {
 
     @Override
     public void clear() {
-        if (storage!= null && size > 0) {
+        if (storage != null && size > 0) {
             Arrays.fill(storage, null);
             size = 0;
         }
@@ -144,7 +140,7 @@ public class MySimpleHashMap<K, V> implements SimpleHashMap<K, V> {
                     if (compareValue && Objects.equals(value, v)) {
                         doRemove(indexInBucket, bucket, prevTemp, temp);
                         return temp;
-                    } else if (!compareValue){
+                    } else if (!compareValue) {
                         doRemove(indexInBucket, bucket, prevTemp, temp);
                         return temp;
                     }
@@ -186,6 +182,21 @@ public class MySimpleHashMap<K, V> implements SimpleHashMap<K, V> {
         }
     }
 
+    private Node<K, V> getNode(Object key) {
+        int bucket = countBucket((K) key);
+        Node<K, V> temp = storage[bucket];
+        if (temp != null) {
+            do {
+                K k = temp.getKey();
+                if (Objects.equals(k, key)) {
+                    return temp;
+                }
+                temp = temp.getNext();
+            } while (temp != null);
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("MySimpleHashMap{");
@@ -212,41 +223,26 @@ public class MySimpleHashMap<K, V> implements SimpleHashMap<K, V> {
         return sb.append('}').toString();
     }
 
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     static class Node<K, V> {
 
+        @Getter
         K key;
+
+        @Getter
+        @Setter
         V value;
+
         int hash;
+
+        @Getter
+        @Setter
         Node<K, V> next;
 
         public Node(K key, V value) {
             this.key = key;
             this.value = value;
             this.hash = hashCode();
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-
-        public void setValue(V value) {
-            this.value = value;
-        }
-
-        public Node<K, V> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<K, V> next) {
-            this.next = next;
         }
 
         @Override

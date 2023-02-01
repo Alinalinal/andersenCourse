@@ -1,14 +1,19 @@
 package com.alinab.taskTwoCollections.arrayList;
 
-import java.util.Arrays;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
+import java.util.Arrays;
+import java.util.Objects;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MySimpleArrayList<E> implements SimpleArrayList<E> {
 
-    private static final int DEFAULT_CAPACITY = 10;
+    static final int DEFAULT_CAPACITY = 10;
 
-    private Object[] storage;
-    private int size;
-    private int storageCapacity;
+    Object[] storage;
+    int size;
+    int storageCapacity;
 
     public MySimpleArrayList() {
         this(0);
@@ -36,8 +41,9 @@ public class MySimpleArrayList<E> implements SimpleArrayList<E> {
 
 
     @Override
-    public void add(E element) {
+    public boolean add(E element) {
         doAdd(size, element);
+        return true;
     }
 
     @Override
@@ -63,8 +69,8 @@ public class MySimpleArrayList<E> implements SimpleArrayList<E> {
     }
 
     @Override
-    public boolean remove(E element) {
-        int index = getIndex(element);
+    public boolean remove(Object o) {
+        int index = getIndex(o);
         if (index > -1) {
             doRemove(index);
             return true;
@@ -73,8 +79,13 @@ public class MySimpleArrayList<E> implements SimpleArrayList<E> {
     }
 
     @Override
-    public boolean contains(E element) {
-        return getIndex(element) > -1;
+    public boolean contains(Object o) {
+        return getIndex(o) > -1;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     @Override
@@ -112,9 +123,9 @@ public class MySimpleArrayList<E> implements SimpleArrayList<E> {
         size--;
     }
 
-    private int getIndex(E element) {
+    private int getIndex(Object element) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].equals(element)) {
+            if (Objects.equals(storage[i], element)) {
                 return i;
             }
         }

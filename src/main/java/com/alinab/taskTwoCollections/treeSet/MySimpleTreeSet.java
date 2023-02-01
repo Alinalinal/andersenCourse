@@ -1,4 +1,4 @@
-package com.alinab.taskTwoCollections.treeMap;
+package com.alinab.taskTwoCollections.treeSet;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -6,33 +6,32 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
+public class MySimpleTreeSet<V> implements SimpleTreeSet<V> {
 
-    Node<K, V> root;
+    Node<V> root;
     int size;
 
     @Override
-    public V put(K key, V value) {
-        checkKeyWithException(key);
+    public boolean add(V value) {
+        checkWithException(value);
         if (size == 0) {
-            root = new Node<>(key, value);
+            root = new Node<>(value);
             size = 1;
-            return null;
+            return true;
         }
-        Node<K, V> temp = root;
-        Node<K, V> parent;
-        Comparable<? super K> k = (Comparable<? super K>) key;
+        Node<V> temp = root;
+        Node<V> parent;
+        Comparable<? super V> k = (Comparable<? super V>) value;
         int comp;
         do {
-            comp = k.compareTo(temp.getKey());
+            comp = k.compareTo(temp.getValue());
             if (comp == 0) {
-                V oldValue = temp.getValue();
-                temp.setValue(value);
-                return oldValue;
+                return false;
             } else {
                 parent = temp;
                 if (comp < 0) {
@@ -42,7 +41,7 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
                 }
             }
         } while (temp != null);
-        temp = new Node<>(key, value);
+        temp = new Node<>(value);
         temp.setParent(parent);
         if (comp < 0) {
             parent.setLeft(temp);
@@ -50,66 +49,33 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
             parent.setRight(temp);
         }
         size++;
-        return null;
+        return true;
     }
 
     @Override
-    public Node<K, V> firstEntry() {
-        Node<K, V> node = root;
-        Node<K, V> leftNode = node.getLeft();
-        while (leftNode != null) {
-            node = leftNode;
-            leftNode = node.getLeft();
-        }
-        return node;
+    public V first() {
+        return getFirstNode().getValue();
     }
 
     @Override
-    public Node<K, V> lastEntry() {
-        Node<K, V> node = root;
-        Node<K, V> rightNode = node.getRight();
+    public V last() {
+        checkSizeWithException();
+        Node<V> node = root;
+        Node<V> rightNode = node.getRight();
         while (rightNode != null) {
             node = rightNode;
             rightNode = node.getRight();
         }
-        return node;
+        return node.getValue();
     }
 
     @Override
-    public V get(Object key) {
-        Node<K, V> node = getNode(key);
-        return node == null ? null : node.getValue();
-    }
-
-    @Override
-    public boolean containsKey(Object key) {
-        return getNode(key) != null;
-    }
-
-    @Override
-    public boolean containsValue(Object value) {
-        if (size == 0) {
-            return false;
-        }
-        Node<K, V> temp = firstEntry();
-        do {
-            if (Objects.equals(value, temp.getValue())) {
-                return true;
-            }
-            temp = getHeirNode(temp);
-        } while (temp != null);
-        return false;
-    }
-
-    @Override
-    public V remove(Object key) {
-        Node<K, V> node = getNode(key);
-        V oldValue = null;
+    public boolean remove(Object o) {
+        Node<V> node = getNode(o);
         if (node != null) {
-            oldValue = node.getValue();
-            Node<K, V> parentNode = node.getParent();
-            Node<K, V> leftNode = node.getLeft();
-            Node<K, V> rightNode = node.getRight();
+            Node<V> parentNode = node.getParent();
+            Node<V> leftNode = node.getLeft();
+            Node<V> rightNode = node.getRight();
             if (leftNode == null && rightNode == null) {
                 if (node.equals(root)) {
                     root = null;
@@ -123,7 +89,7 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
             } else if (leftNode == null) {
                 rebaseNode(node, rightNode, parentNode);
             } else {
-                Node<K, V> heirNode = getHeirNode(node);
+                Node<V> heirNode = getHeirNode(node);
                 if (node.equals(root)) {
                     heirNode.setParent(null);
                     heirNode.setLeft(root.getLeft());
@@ -137,19 +103,14 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
                 }
             }
             size--;
+            return true;
         }
-        return oldValue;
+        return false;
     }
 
     @Override
-    public V replace(K key, V value) {
-        Node<K, V> node = getNode(key);
-        if (node != null) {
-            V oldValue = node.getValue();
-            node.setValue(value);
-            return oldValue;
-        }
-        return null;
+    public boolean contains(Object o) {
+        return getNode(o) != null;
     }
 
     @Override
@@ -168,22 +129,56 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
         return size;
     }
 
-    private void checkKeyWithException(K key) {
-        if (key == null) {
-            throw new NullPointerException("Key mustn't be null");
+    private void checkWithException(Object value) {
+        if (value == null) {
+            throw new NullPointerException("Value mustn't be null");
         }
     }
 
-    private Node<K, V> getNode(Object key) {
-        checkKeyWithException((K) key);
+    private void checkSizeWithException() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    private Node<V> getFirstNode() {
+        checkSizeWithException();
+        Node<V> node = root;
+        Node<V> leftNode = node.getLeft();
+        while (leftNode != null) {
+            node = leftNode;
+            leftNode = node.getLeft();
+        }
+        return node;
+    }
+
+    private Node<V> getHeirNode(Node<V> node) {
+        if (node.getRight() != null) {
+            node = node.getRight();
+            while (node.getLeft() != null) {
+                node = node.getLeft();
+            }
+        } else {
+            Node<V> nodeCh = node;
+            node = node.getParent();
+            while (node != null && nodeCh == node.getRight()) {
+                nodeCh = node;
+                node = node.getParent();
+            }
+        }
+        return node;
+    }
+
+    private Node<V> getNode(Object value) {
+        checkWithException(value);
         if (size == 0) {
             return null;
         }
-        Node<K, V> temp = root;
-        Comparable<? super K> k = (Comparable<? super K>) key;
+        Node<V> temp = root;
+        Comparable<? super V> v = (Comparable<? super V>) value;
         int comp;
         do {
-            comp = k.compareTo(temp.getKey());
+            comp = v.compareTo(temp.getValue());
             if (comp == 0) {
                 return temp;
             } else if (comp < 0) {
@@ -195,24 +190,7 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
         return null;
     }
 
-    private Node<K, V> getHeirNode(Node<K, V> node) {
-        if (node.getRight() != null) {
-            node = node.getRight();
-            while (node.getLeft() != null) {
-                node = node.getLeft();
-            }
-        } else {
-            Node<K, V> nodeCh = node;
-            node = node.getParent();
-            while (node != null && nodeCh == node.getRight()) {
-                nodeCh = node;
-                node = node.getParent();
-            }
-        }
-        return node;
-    }
-
-    private void rebaseNode(Node<K, V> oldNode, Node<K, V> newNode, Node<K, V> parentNode) {
+    private void rebaseNode(Node<V> oldNode, Node<V> newNode, Node<V> parentNode) {
         if (oldNode.equals(root)) {
             root = newNode;
             root.setParent(null);
@@ -231,7 +209,7 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
         if (size == 0) {
             sb.append("isEmpty");
         } else {
-            Node<K, V> temp = firstEntry();
+            Node<V> temp = getFirstNode();
             int i = 0;
             do {
                 sb.append(temp);
@@ -246,24 +224,30 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
     }
 
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Getter
-    @Setter
-    static class Node<K, V> {
+    static class Node<V> {
 
-        K key;
-        V value;
-        Node<K, V> left;
-        Node<K, V> right;
-        Node<K, V> parent;
+        @Getter
+        final V value;
 
-        public Node(K key, V value) {
-            this.key = key;
+        @Getter
+        @Setter
+        Node<V> left;
+
+        @Getter
+        @Setter
+        Node<V> right;
+
+        @Getter
+        @Setter
+        Node<V> parent;
+
+        public Node(V value) {
             this.value = value;
         }
 
         @Override
         public int hashCode() {
-            return key.hashCode();
+            return value != null ? value.hashCode() : 0;
         }
 
         @Override
@@ -271,15 +255,14 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            Node<?, ?> node = (Node<?, ?>) o;
+            Node<?> node = (Node<?>) o;
 
-            if (!key.equals(node.key)) return false;
             return Objects.equals(value, node.value);
         }
 
         @Override
         public String toString() {
-            return key + "=" + value;
+            return value.toString();
         }
     }
 }

@@ -1,16 +1,17 @@
 package com.alinab.taskTwoCollections.linkedList;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import java.util.NoSuchElementException;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
 public class MySimpleLinkedList<E> implements SimpleLinkedList<E> {
 
-    private Node<E> firstNode;
-    private Node<E> lastNode;
-    private int size;
-
-    public MySimpleLinkedList() {
-    }
-
+    Node<E> firstNode;
+    Node<E> lastNode;
+    int size;
 
     @Override
     public void addFirst(E element) {
@@ -233,6 +234,9 @@ public class MySimpleLinkedList<E> implements SimpleLinkedList<E> {
         return sb.append('}').toString();
     }
 
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    @Getter
+    @Setter
     static class Node<E> {
 
         E element;
@@ -243,30 +247,6 @@ public class MySimpleLinkedList<E> implements SimpleLinkedList<E> {
             this.element = element;
             this.prevNode = prevElement;
             this.nextNode = nextElement;
-        }
-
-        public E getElement() {
-            return element;
-        }
-
-        public void setElement(E element) {
-            this.element = element;
-        }
-
-        public Node<E> getPrevNode() {
-            return prevNode;
-        }
-
-        public void setPrevNode(Node<E> prevNode) {
-            this.prevNode = prevNode;
-        }
-
-        public Node<E> getNextNode() {
-            return nextNode;
-        }
-
-        public void setNextNode(Node<E> nextNode) {
-            this.nextNode = nextNode;
         }
 
         @Override

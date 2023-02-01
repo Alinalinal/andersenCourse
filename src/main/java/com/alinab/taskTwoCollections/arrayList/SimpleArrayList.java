@@ -2,7 +2,7 @@ package com.alinab.taskTwoCollections.arrayList;
 
 public interface SimpleArrayList<E> {
 
-    void add(E element);
+    boolean add(E element);
 
     void add(int index, E e);
 
@@ -12,9 +12,11 @@ public interface SimpleArrayList<E> {
 
     E remove(int index);
 
-    boolean remove(E e);
+    boolean remove(Object o);
 
-    boolean contains(E e);
+    boolean contains(Object o);
+
+    boolean isEmpty();
 
     void clear();
 

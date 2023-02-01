@@ -1,16 +1,18 @@
 package com.alinab.taskTwoCollections.queue;
 
-import com.alinab.taskTwoCollections.queue.SimpleQueue;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MySimpleQueue<E> implements SimpleQueue<E> {
 
-    private static final int DEFAULT_CAPACITY = 11;
+    static final int DEFAULT_CAPACITY = 11;
 
-    private final Object[] storage;
-    private final int storageCapacity;
-    private int size;
-    private int tail = -1;
-    private int head = -1;
+    final Object[] storage;
+    final int storageCapacity;
+    int size;
+    int tail = -1;
+    int head = -1;
 
     public MySimpleQueue() {
         this(0);

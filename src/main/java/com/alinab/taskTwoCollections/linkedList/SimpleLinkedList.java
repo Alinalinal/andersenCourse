@@ -10,11 +10,11 @@ public interface SimpleLinkedList<E> {
 
     void add(int index, E element);
 
+    E get(int index);
+
     E getFirst();
 
     E getLast();
-
-    E get(int index);
 
     E removeFirst();
 
@@ -28,5 +28,5 @@ public interface SimpleLinkedList<E> {
 
     void clear();
 
-    int indexOf(Object o); //?
+    int indexOf(Object o);
 }
