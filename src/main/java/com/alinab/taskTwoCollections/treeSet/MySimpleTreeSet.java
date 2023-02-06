@@ -19,37 +19,8 @@ public class MySimpleTreeSet<V> implements SimpleTreeSet<V> {
     @Override
     public boolean add(V value) {
         checkWithException(value);
-        if (size == 0) {
-            root = new Node<>(value);
-            size = 1;
-            return true;
-        }
-        Node<V> temp = root;
-        Node<V> parent;
-        Comparable<? super V> k = (Comparable<? super V>) value;
-        int comp;
-        do {
-            comp = k.compareTo(temp.getValue());
-            if (comp == 0) {
-                return false;
-            } else {
-                parent = temp;
-                if (comp < 0) {
-                    temp = temp.getLeft();
-                } else {
-                    temp = temp.getRight();
-                }
-            }
-        } while (temp != null);
-        temp = new Node<>(value);
-        temp.setParent(parent);
-        if (comp < 0) {
-            parent.setLeft(temp);
-        } else {
-            parent.setRight(temp);
-        }
-        size++;
-        return true;
+        boolean isAdded = doAdd(value);
+        return isAdded;
     }
 
     @Override
@@ -73,36 +44,7 @@ public class MySimpleTreeSet<V> implements SimpleTreeSet<V> {
     public boolean remove(Object o) {
         Node<V> node = getNode(o);
         if (node != null) {
-            Node<V> parentNode = node.getParent();
-            Node<V> leftNode = node.getLeft();
-            Node<V> rightNode = node.getRight();
-            if (leftNode == null && rightNode == null) {
-                if (node.equals(root)) {
-                    root = null;
-                } else if (Objects.equals(parentNode.getLeft(), node)) {
-                    parentNode.setLeft(null);
-                } else {
-                    parentNode.setRight(null);
-                }
-            } else if (rightNode == null) {
-                rebaseNode(node, leftNode, parentNode);
-            } else if (leftNode == null) {
-                rebaseNode(node, rightNode, parentNode);
-            } else {
-                Node<V> heirNode = getHeirNode(node);
-                if (node.equals(root)) {
-                    heirNode.setParent(null);
-                    heirNode.setLeft(root.getLeft());
-                    root.getLeft().setParent(heirNode);
-                    root = heirNode;
-                } else {
-                    parentNode.setRight(heirNode);
-                    heirNode.setParent(parentNode);
-                    heirNode.setLeft(leftNode);
-                    leftNode.setParent(heirNode);
-                }
-            }
-            size--;
+            doRemove(node);
             return true;
         }
         return false;
@@ -139,6 +81,40 @@ public class MySimpleTreeSet<V> implements SimpleTreeSet<V> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
+    }
+
+    private boolean doAdd(V value) {
+        if (size == 0) {
+            root = new Node<>(value);
+            size = 1;
+            return true;
+        }
+        Node<V> temp = root;
+        Node<V> parent;
+        Comparable<? super V> k = (Comparable<? super V>) value;
+        int comp;
+        do {
+            comp = k.compareTo(temp.getValue());
+            if (comp == 0) {
+                return false;
+            } else {
+                parent = temp;
+                if (comp < 0) {
+                    temp = temp.getLeft();
+                } else {
+                    temp = temp.getRight();
+                }
+            }
+        } while (temp != null);
+        temp = new Node<>(value);
+        temp.setParent(parent);
+        if (comp < 0) {
+            parent.setLeft(temp);
+        } else {
+            parent.setRight(temp);
+        }
+        size++;
+        return true;
     }
 
     private Node<V> getFirstNode() {
@@ -190,8 +166,34 @@ public class MySimpleTreeSet<V> implements SimpleTreeSet<V> {
         return null;
     }
 
-    private void rebaseNode(Node<V> oldNode, Node<V> newNode, Node<V> parentNode) {
-        if (oldNode.equals(root)) {
+    private void doRemove(Node<V> node) {
+        Node<V> parentNode = node.getParent();
+        Node<V> leftNode = node.getLeft();
+        Node<V> rightNode = node.getRight();
+        if (leftNode == null && rightNode == null) {
+            removeLeafNode(node, parentNode);
+        } else if (rightNode == null) {
+            removeNodeWithOneChild(node, leftNode, parentNode);
+        } else if (leftNode == null) {
+            removeNodeWithOneChild(node, rightNode, parentNode);
+        } else {
+            removeNodeWithTwoChildren(node, parentNode, leftNode);
+        }
+        size--;
+    }
+
+    private void removeLeafNode(Node<V> node, Node<V> parentNode) {
+        if (isRoot(node)) {
+            root = null;
+        } else if (Objects.equals(parentNode.getLeft(), node)) {
+            parentNode.setLeft(null);
+        } else {
+            parentNode.setRight(null);
+        }
+    }
+
+    private void removeNodeWithOneChild(Node<V> oldNode, Node<V> newNode, Node<V> parentNode) {
+        if (isRoot(oldNode)) {
             root = newNode;
             root.setParent(null);
         } else if (Objects.equals(parentNode.getLeft(), oldNode)) {
@@ -201,6 +203,25 @@ public class MySimpleTreeSet<V> implements SimpleTreeSet<V> {
             parentNode.setRight(newNode);
             newNode.setParent(parentNode);
         }
+    }
+
+    private void removeNodeWithTwoChildren(Node<V> node, Node<V> parentNode, Node<V> leftNode) {
+        Node<V> heirNode = getHeirNode(node);
+        if (isRoot(node)) {
+            heirNode.setParent(null);
+            heirNode.setLeft(root.getLeft());
+            root.getLeft().setParent(heirNode);
+            root = heirNode;
+        } else {
+            parentNode.setRight(heirNode);
+            heirNode.setParent(parentNode);
+            heirNode.setLeft(leftNode);
+            leftNode.setParent(heirNode);
+        }
+    }
+
+    private boolean isRoot(Node<V> node) {
+        return node.equals(root);
     }
 
     @Override

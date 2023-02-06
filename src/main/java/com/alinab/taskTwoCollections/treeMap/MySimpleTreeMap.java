@@ -18,39 +18,9 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
     @Override
     public V put(K key, V value) {
         checkKeyWithException(key);
-        if (size == 0) {
-            root = new Node<>(key, value);
-            size = 1;
-            return null;
-        }
-        Node<K, V> temp = root;
-        Node<K, V> parent;
-        Comparable<? super K> k = (Comparable<? super K>) key;
-        int comp;
-        do {
-            comp = k.compareTo(temp.getKey());
-            if (comp == 0) {
-                V oldValue = temp.getValue();
-                temp.setValue(value);
-                return oldValue;
-            } else {
-                parent = temp;
-                if (comp < 0) {
-                    temp = temp.getLeft();
-                } else {
-                    temp = temp.getRight();
-                }
-            }
-        } while (temp != null);
-        temp = new Node<>(key, value);
-        temp.setParent(parent);
-        if (comp < 0) {
-            parent.setLeft(temp);
-        } else {
-            parent.setRight(temp);
-        }
-        size++;
-        return null;
+        V oldValue = doPut(key, value);
+        return oldValue;
+
     }
 
     @Override
@@ -107,36 +77,7 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
         V oldValue = null;
         if (node != null) {
             oldValue = node.getValue();
-            Node<K, V> parentNode = node.getParent();
-            Node<K, V> leftNode = node.getLeft();
-            Node<K, V> rightNode = node.getRight();
-            if (leftNode == null && rightNode == null) {
-                if (node.equals(root)) {
-                    root = null;
-                } else if (Objects.equals(parentNode.getLeft(), node)) {
-                    parentNode.setLeft(null);
-                } else {
-                    parentNode.setRight(null);
-                }
-            } else if (rightNode == null) {
-                rebaseNode(node, leftNode, parentNode);
-            } else if (leftNode == null) {
-                rebaseNode(node, rightNode, parentNode);
-            } else {
-                Node<K, V> heirNode = getHeirNode(node);
-                if (node.equals(root)) {
-                    heirNode.setParent(null);
-                    heirNode.setLeft(root.getLeft());
-                    root.getLeft().setParent(heirNode);
-                    root = heirNode;
-                } else {
-                    parentNode.setRight(heirNode);
-                    heirNode.setParent(parentNode);
-                    heirNode.setLeft(leftNode);
-                    leftNode.setParent(heirNode);
-                }
-            }
-            size--;
+            doRemove(node);
         }
         return oldValue;
     }
@@ -172,6 +113,42 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
         if (key == null) {
             throw new NullPointerException("Key mustn't be null");
         }
+    }
+
+    private V doPut(K key, V value) {
+        if (size == 0) {
+            root = new Node<>(key, value);
+            size = 1;
+            return null;
+        }
+        Node<K, V> temp = root;
+        Node<K, V> parent;
+        Comparable<? super K> k = (Comparable<? super K>) key;
+        int comp;
+        do {
+            comp = k.compareTo(temp.getKey());
+            if (comp == 0) {
+                V oldValue = temp.getValue();
+                temp.setValue(value);
+                return oldValue;
+            } else {
+                parent = temp;
+                if (comp < 0) {
+                    temp = temp.getLeft();
+                } else {
+                    temp = temp.getRight();
+                }
+            }
+        } while (temp != null);
+        temp = new Node<>(key, value);
+        temp.setParent(parent);
+        if (comp < 0) {
+            parent.setLeft(temp);
+        } else {
+            parent.setRight(temp);
+        }
+        size++;
+        return null;
     }
 
     private Node<K, V> getNode(Object key) {
@@ -212,8 +189,34 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
         return node;
     }
 
-    private void rebaseNode(Node<K, V> oldNode, Node<K, V> newNode, Node<K, V> parentNode) {
-        if (oldNode.equals(root)) {
+    private void doRemove(Node<K, V> node) {
+        Node<K, V> parentNode = node.getParent();
+        Node<K, V> leftNode = node.getLeft();
+        Node<K, V> rightNode = node.getRight();
+        if (leftNode == null && rightNode == null) {
+            removeLeafNode(node, parentNode);
+        } else if (rightNode == null) {
+            removeNodeWithOneChild(node, leftNode, parentNode);
+        } else if (leftNode == null) {
+            removeNodeWithOneChild(node, rightNode, parentNode);
+        } else {
+            removeNodeWithTwoChildren(node, parentNode, leftNode);
+        }
+        size--;
+    }
+
+    private void removeLeafNode(Node<K, V> node, Node<K, V> parentNode) {
+        if (isRoot(node)) {
+            root = null;
+        } else if (Objects.equals(parentNode.getLeft(), node)) {
+            parentNode.setLeft(null);
+        } else {
+            parentNode.setRight(null);
+        }
+    }
+
+    private void removeNodeWithOneChild(Node<K, V> oldNode, Node<K, V> newNode, Node<K, V> parentNode) {
+        if (isRoot(oldNode)) {
             root = newNode;
             root.setParent(null);
         } else if (Objects.equals(parentNode.getLeft(), oldNode)) {
@@ -223,6 +226,25 @@ public class MySimpleTreeMap<K, V> implements SimpleTreeMap<K, V> {
             parentNode.setRight(newNode);
             newNode.setParent(parentNode);
         }
+    }
+
+    private void removeNodeWithTwoChildren(Node<K, V> node, Node<K, V> parentNode, Node<K, V> leftNode) {
+        Node<K, V> heirNode = getHeirNode(node);
+        if (isRoot(node)) {
+            heirNode.setParent(null);
+            heirNode.setLeft(root.getLeft());
+            root.getLeft().setParent(heirNode);
+            root = heirNode;
+        } else {
+            parentNode.setRight(heirNode);
+            heirNode.setParent(parentNode);
+            heirNode.setLeft(leftNode);
+            leftNode.setParent(heirNode);
+        }
+    }
+
+    private boolean isRoot(Node<K, V> node) {
+        return node.equals(root);
     }
 
     @Override

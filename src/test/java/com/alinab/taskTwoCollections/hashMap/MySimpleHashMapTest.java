@@ -40,7 +40,7 @@ public class MySimpleHashMapTest {
     }
 
     @Test
-    public void get() {
+    public void getReturnValueByKey() {
         assertGetValue(KEY_1, VALUE_1);
         assertGetValue(KEY_5, VALUE_5);
         assertGetValue(KEY_NULL, VALUE_NULL);
@@ -48,7 +48,7 @@ public class MySimpleHashMapTest {
     }
 
     @Test
-    public void containsKey() {
+    public void ifContainsKeyThenReturnTrueElseFalse() {
         assertTrue(hashMap.containsKey(KEY_1));
         assertTrue(hashMap.containsKey(KEY_5));
         assertTrue(hashMap.containsKey(KEY_NULL));
@@ -57,7 +57,7 @@ public class MySimpleHashMapTest {
     }
 
     @Test
-    public void containsValue() {
+    public void ifContainsValueThenReturnTrueElseFalse() {
         assertTrue(hashMap.containsValue(VALUE_1));
         assertTrue(hashMap.containsValue(VALUE_5));
         assertTrue(hashMap.containsValue(VALUE_NULL));
@@ -66,21 +66,21 @@ public class MySimpleHashMapTest {
     }
 
     @Test
-    public void put() {
+    public void putNewValueByNotExistKeyReturnNull() {
         assertNull(hashMap.put(KEY_TEST, VALUE_TEST));
         assertSize(7);
         assertGetValue(KEY_TEST, VALUE_TEST);
     }
 
     @Test
-    public void putExistKey() {
+    public void putNewValueByExistKeyReturnOldValue() {
         assertEquals(hashMap.put(KEY_2, VALUE_TEST), VALUE_2);
         assertSize(6);
         assertGetValue(KEY_2, VALUE_TEST);
     }
 
     @Test
-    public void removeWithKey() {
+    public void removeValueByKeyIfExistThenReturnValueElseNull() {
         assertEquals(hashMap.remove(KEY_5), VALUE_5);
         assertNull(hashMap.get(KEY_5));
         assertSize(5);
@@ -91,7 +91,7 @@ public class MySimpleHashMapTest {
     }
 
     @Test
-    public void removeWithKeyValue() {
+    public void removeValueByKeyAndValueIfPairExistThenReturnTrueElseFalse() {
         assertTrue(hashMap.remove(KEY_5, VALUE_5));
         assertNull(hashMap.get(KEY_5));
         assertSize(5);
@@ -103,14 +103,14 @@ public class MySimpleHashMapTest {
     }
 
     @Test
-    public void clear() {
+    public void clearSetSize0() {
         assertSize(6);
         hashMap.clear();
         assertSize(0);
     }
 
     @Test
-    public void isEmpty() {
+    public void ifIsEmptyThenReturnTrueElseFalse() {
         assertFalse(hashMap.isEmpty());
         assertSize(6);
         hashMap.clear();
@@ -119,7 +119,7 @@ public class MySimpleHashMapTest {
     }
 
     @Test
-    public void size() {
+    public void sizeReturnActualSize() {
         assertSize(6);
         hashMap.remove(KEY_3);
         assertSize(5);

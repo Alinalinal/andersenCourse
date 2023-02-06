@@ -26,7 +26,6 @@ public class MySimpleTreeMapTest {
     static final Integer VALUE_4 = 4;
     static final Integer VALUE_5 = 5;
     static final Integer VALUE_TEST = 100;
-    static final Integer VALUE_NULL = null;
 
     @Before
     public void initAndFill() {
@@ -39,73 +38,73 @@ public class MySimpleTreeMapTest {
     }
 
     @Test
-    public void put() {
+    public void putNewValueByNewKeyReturnNull() {
         assertNull(treeMap.put(KEY_TEST, VALUE_TEST));
         assertSize(6);
         assertGetValue(KEY_TEST, VALUE_TEST);
     }
 
     @Test
-    public void putExistKey() {
+    public void putNewValueByExistKeyReturnOldValue() {
         treeMap.put(KEY_2, VALUE_TEST);
         assertSize(5);
         assertGetValue(KEY_2, VALUE_TEST);
     }
 
     @Test(expected = NullPointerException.class)
-    public void putNullKey() {
+    public void whenPutNewValueByNullKeyThenThrowNullPointerException() {
         treeMap.put(null, VALUE_TEST);
     }
 
     @Test
-    public void firstEntry() {
+    public void firstEntryReturnFirstKeyValueOrNullIfEmpty() {
         assertEquals(treeMap.firstEntry().getKey(), KEY_5);
         assertEquals(treeMap.firstEntry().getValue(), VALUE_5);
     }
 
     @Test
-    public void lastEntry() {
+    public void lastEntryReturnLastKeyValueOrNullIfEmpty() {
         assertEquals(treeMap.lastEntry().getKey(), KEY_3);
         assertEquals(treeMap.lastEntry().getValue(), VALUE_3);
     }
 
     @Test
-    public void get() {
+    public void getReturnValueByKey() {
         assertGetValue(KEY_1, VALUE_1);
         assertGetValue(KEY_3, VALUE_3);
         assertGetValue(KEY_4, VALUE_4);
     }
 
     @Test
-    public void getNotExistKey() {
+    public void getReturnNullByNotExistKey() {
         Integer result = treeMap.get("test");
         assertNull(result);
     }
 
     @Test(expected = NullPointerException.class)
-    public void getNullKey() {
+    public void whenGetByNullKeyThenThrowNullPointerException() {
         treeMap.get(KEY_NULL);
     }
 
     @Test
-    public void containsKey() {
+    public void ifContainsKeyReturnTrueElseFalse() {
         assertTrue(treeMap.containsKey(KEY_2));
         assertFalse(treeMap.containsKey(KEY_TEST));
     }
 
     @Test(expected = NullPointerException.class)
-    public void containsNullKey() {
+    public void whenCheckContainsKeyByNullKeyThenThrowNullPointerException() {
         treeMap.containsKey(KEY_NULL);
     }
 
     @Test
-    public void containsValue() {
+    public void ifContainsValueReturnTrueElseFalse() {
         assertTrue(treeMap.containsValue(VALUE_5));
         assertFalse(treeMap.containsKey(KEY_TEST));
     }
 
     @Test
-    public void remove() {
+    public void removeValueByKeyIfExistThenReturnValueElseNull() {
         assertEquals(treeMap.remove(KEY_5), VALUE_5);
         assertNull(treeMap.get(KEY_5));
         assertSize(4);
@@ -114,12 +113,12 @@ public class MySimpleTreeMapTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void removeNullKey() {
+    public void whenRemoveByNullKeyThenThrowNullPointerException() {
         treeMap.remove(KEY_NULL);
     }
 
     @Test
-    public void replace() {
+    public void replaceValueByKeyReturnOldValueOrNullIfKeyNotExist() {
         Integer value3 = treeMap.replace(KEY_3, VALUE_TEST);
         assertEquals(value3, VALUE_3);
         assertGetValue(KEY_3, VALUE_TEST);
@@ -129,19 +128,19 @@ public class MySimpleTreeMapTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void replaceNullKey() {
+    public void whenReplaceByNullKeyThenThrowNullPointerException() {
         treeMap.replace(KEY_NULL, VALUE_TEST);
     }
 
     @Test
-    public void clear() {
+    public void clearSetSize0() {
         assertSize(5);
         treeMap.clear();
         assertSize(0);
     }
 
     @Test
-    public void isEmpty() {
+    public void ifIsEmptyThenReturnTrueElseFalse() {
         assertFalse(treeMap.isEmpty());
         assertSize(5);
         treeMap.clear();
@@ -150,7 +149,7 @@ public class MySimpleTreeMapTest {
     }
 
     @Test
-    public void size() {
+    public void sizeReturnActualSize() {
         assertSize(5);
         treeMap.remove(KEY_3);
         assertSize(4);

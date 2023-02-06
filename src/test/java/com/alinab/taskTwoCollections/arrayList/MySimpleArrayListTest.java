@@ -31,18 +31,18 @@ public class MySimpleArrayListTest {
     }
 
     @Test
-    public void get() {
+    public void getReturnElementByIndex() {
         assertGetElement(0, VALUE_3);
         assertGetElement(3, null);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void getIllegalIndex() {
+    public void whenGetByIllegalArrayIndexThenThrowIndexOutOfBoundException() {
         arrayList.get(-1);
     }
 
     @Test
-    public void add() {
+    public void addNewElementToTheEndReturnTrue() {
         assertTrue(arrayList.add(VALUE_TEST));
         arrayList.add(VALUE_1);
         assertTrue(arrayList.add(VALUE_3));
@@ -53,7 +53,7 @@ public class MySimpleArrayListTest {
     }
 
     @Test
-    public void addWithIndex() {
+    public void addNewElementByIndexShiftElementsFromThisIndexToTheRight() {
         assertGetElement(3, VALUE_NULL);
         assertSize(5);
         arrayList.add(3, VALUE_TEST);
@@ -63,12 +63,12 @@ public class MySimpleArrayListTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void addWithIllegalIndex() {
+    public void whenAddByIllegalArrayIndexThenThrowIndexOutOfBoundsException() {
         arrayList.add(-1, VALUE_TEST);
     }
 
     @Test
-    public void set() {
+    public void setNewElementByIndexRemoveAndReturnOldElement() {
         String oldElement = arrayList.set(1, VALUE_TEST);
         assertNotEquals(oldElement, arrayList.get(1));
         arrayList.set(4, VALUE_2);
@@ -77,12 +77,12 @@ public class MySimpleArrayListTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void setWithIllegalIndex() {
+    public void whenSetByIllegalArrayIndexThenThrowIndexOutOfBoundsException() {
         arrayList.set(-1, VALUE_TEST);
     }
 
     @Test
-    public void removeByIndex() {
+    public void removeElementByIndexReturnIt() {
         assertGetElement(3, VALUE_NULL);
         assertSize(5);
         assertEquals(arrayList.remove(3), VALUE_NULL);
@@ -93,12 +93,12 @@ public class MySimpleArrayListTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void removeByIndexWithIllegalIndex() {
+    public void whenRemoveByIllegalArrayIndexThenThrowIndexOutOfBoundsException() {
         arrayList.remove(-1);
     }
 
     @Test
-    public void removeByElementValue() {
+    public void removeByElementValueReturnTrueElseReturnFalse() {
         assertGetElement(3, VALUE_NULL);
         assertSize(5);
         assertTrue(arrayList.remove(VALUE_NULL));
@@ -111,7 +111,7 @@ public class MySimpleArrayListTest {
     }
 
     @Test
-    public void contains() {
+    public void ifContainElementThenReturnTrueElseFalse() {
         assertTrue(arrayList.contains(VALUE_2));
         assertTrue(arrayList.contains(VALUE_NULL));
         assertFalse(arrayList.contains(VALUE_TEST));
@@ -119,14 +119,14 @@ public class MySimpleArrayListTest {
     }
 
     @Test
-    public void clear() {
+    public void clearSetSize0() {
         assertSize(5);
         arrayList.clear();
         assertSize(0);
     }
 
     @Test
-    public void isEmpty() {
+    public void ifIsEmptyThenReturnTrueElseFalse() {
         assertFalse(arrayList.isEmpty());
         assertSize(5);
         arrayList.clear();
@@ -135,7 +135,7 @@ public class MySimpleArrayListTest {
     }
 
     @Test
-    public void size() {
+    public void sizeReturnActualSize() {
         assertSize(5);
         arrayList.remove(VALUE_1);
         assertSize(4);

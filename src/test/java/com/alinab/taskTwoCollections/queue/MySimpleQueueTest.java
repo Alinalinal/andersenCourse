@@ -29,7 +29,7 @@ public class MySimpleQueueTest {
     }
 
     @Test
-    public void offer() {
+    public void offerInsertNewElementReturnTrueElseFalse() {
         assertSize(4);
         assertTrue(queue.offer(VALUE_TEST));
         assertFalse(queue.offer(VALUE_1));
@@ -37,19 +37,19 @@ public class MySimpleQueueTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void offerNull() {
+    public void whenOfferNullElementThenThrowNullPointerException() {
         queue.offer(VALUE_NULL);
     }
 
     @Test
-    public void peek() {
+    public void peekReturnHeadElementOrNullIfEmpty() {
         assertEquals(queue.peek(), VALUE_2);
         assertEquals(queue.peek(), VALUE_2);
         assertSize(4);
     }
 
     @Test
-    public void poll() {
+    public void pollRemoveAndReturnHeadElementOrNullIfEmpty() {
         assertEquals(queue.poll(), VALUE_2);
         assertEquals(queue.poll(), VALUE_1);
         assertEquals(queue.poll(), VALUE_3);
@@ -59,7 +59,7 @@ public class MySimpleQueueTest {
     }
 
     @Test
-    public void contains() {
+    public void ifContainsElementThenReturnTrueElseFalse() {
         assertTrue(queue.contains(VALUE_2));
         assertTrue(queue.contains(VALUE_3));
         assertFalse(queue.contains(VALUE_TEST));
@@ -67,14 +67,14 @@ public class MySimpleQueueTest {
     }
 
     @Test
-    public void clear() {
+    public void clearSetSize0() {
         assertSize(4);
         queue.clear();
         assertSize(0);
     }
 
     @Test
-    public void size() {
+    public void sizeReturnActualSize() {
         assertSize(4);
         queue.poll();
         assertSize(3);

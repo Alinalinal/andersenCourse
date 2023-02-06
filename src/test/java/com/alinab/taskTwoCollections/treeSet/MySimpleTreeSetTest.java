@@ -33,29 +33,29 @@ public class MySimpleTreeSetTest {
     }
 
     @Test
-    public void add() {
+    public void addNewElementReturnTrue() {
         assertTrue(treeSet.add(VALUE_TEST));
         assertSize(6);
     }
 
     @Test
-    public void addExistValue() {
+    public void addExistValueReturnFalseNoChangeOccurs() {
         assertFalse(treeSet.add(VALUE_4));
         assertSize(5);
     }
 
     @Test(expected = NullPointerException.class)
-    public void addNullValue() {
+    public void whenAddNullValueThenThrowNullPointerException() {
         treeSet.add(VALUE_NULL);
     }
 
     @Test
-    public void first() {
+    public void firstReturnFirstValue() {
         assertEquals(treeSet.first(), VALUE_5);
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void firstFromEmpty() {
+    public void whenGetFirstFromEmptySetThenThrowNoSuchElementException() {
         assertEquals(treeSet.first(), VALUE_5);
         treeSet.clear();
         assertSize(0);
@@ -63,12 +63,12 @@ public class MySimpleTreeSetTest {
     }
 
     @Test
-    public void last() {
+    public void lastReturnLastValue() {
         assertEquals(treeSet.last(), VALUE_3);
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void lastFromEmpty() {
+    public void whenGetLastFromEmptySetThenThrowNoSuchElementException() {
         assertEquals(treeSet.last(), VALUE_3);
         treeSet.clear();
         assertSize(0);
@@ -76,7 +76,7 @@ public class MySimpleTreeSetTest {
     }
 
     @Test
-    public void remove() {
+    public void removeValueReturnTrueIfItExistElseFalse() {
         assertSize(5);
         assertTrue(treeSet.remove(VALUE_5));
         assertSize(4);
@@ -85,30 +85,30 @@ public class MySimpleTreeSetTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void removeNullValue() {
+    public void whenRemoveNullValueThenThrowNullPointerException() {
         treeSet.remove(VALUE_NULL);
     }
 
     @Test
-    public void contains() {
+    public void ifContainsValueReturnTrueElseFalse() {
         assertTrue(treeSet.contains(VALUE_4));
         assertFalse(treeSet.contains(VALUE_TEST));
     }
 
     @Test(expected = NullPointerException.class)
-    public void containsNullValue() {
+    public void whenCheckContainsNullValueThenThrowNullPointerException() {
         treeSet.remove(VALUE_NULL);
     }
 
     @Test
-    public void clear() {
+    public void clearSetSize0() {
         assertSize(5);
         treeSet.clear();
         assertSize(0);
     }
 
     @Test
-    public void isEmpty() {
+    public void ifIsEmptyThenReturnTrueElseFalse() {
         assertFalse(treeSet.isEmpty());
         assertSize(5);
         treeSet.clear();
@@ -117,7 +117,7 @@ public class MySimpleTreeSetTest {
     }
 
     @Test
-    public void size() {
+    public void sizeReturnActualSize() {
         assertSize(5);
         treeSet.remove(VALUE_3);
         assertSize(4);

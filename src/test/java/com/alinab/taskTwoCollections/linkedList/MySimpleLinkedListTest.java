@@ -35,7 +35,7 @@ public class MySimpleLinkedListTest {
     }
 
     @Test
-    public void addFirst() {
+    public void addFirstNewElement() {
         linkedList.addFirst(VALUE_TEST);
         assertGetElement(0, VALUE_TEST);
         linkedList.addFirst(VALUE_NULL);
@@ -44,7 +44,7 @@ public class MySimpleLinkedListTest {
     }
 
     @Test
-    public void addLast() {
+    public void addLastNewElement() {
         linkedList.addLast(VALUE_TEST);
         assertGetElement(linkedList.size() - 1, VALUE_TEST);
         linkedList.addLast(VALUE_NULL);
@@ -53,7 +53,7 @@ public class MySimpleLinkedListTest {
     }
 
     @Test
-    public void add() {
+    public void addNewElementToTheEndReturnTrue() {
         assertTrue(linkedList.add(VALUE_TEST));
         assertGetElement(linkedList.size() - 1, VALUE_TEST);
         assertTrue(linkedList.add(VALUE_NULL));
@@ -62,7 +62,7 @@ public class MySimpleLinkedListTest {
     }
 
     @Test
-    public void addByIndex() {
+    public void addNewElementByIndex() {
         String value2 = linkedList.get(2);
         linkedList.add(2, VALUE_TEST);
         assertGetElement(2, VALUE_TEST);
@@ -75,50 +75,50 @@ public class MySimpleLinkedListTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void addByIllegalIndex() {
+    public void whenAddByIllegalIndexThenThrowIndexOutOfBoundsException() {
         linkedList.add(ILLEGAL_INDEX, VALUE_TEST);
     }
 
     @Test
-    public void get() {
+    public void getElementByIndex() {
         assertGetElement(0, VALUE_4);
         assertGetElement(2, VALUE_5);
         assertGetElement(4, VALUE_2);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void getByIllegalIndex() {
+    public void whenGetByIllegalIndexThenThrowsIndexOutOfBoundException() {
         linkedList.get(ILLEGAL_INDEX);
     }
 
     @Test
-    public void getFirst() {
+    public void getFirstElement() {
         assertGetElement(0, linkedList.getFirst());
         linkedList.addFirst(VALUE_TEST);
         assertEquals(VALUE_TEST, linkedList.getFirst());
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void getFirstFromEmpty() {
+    public void whenGetFirstElementFromEmptyThenThrowNoSuchElementException() {
         linkedList.clear();
         linkedList.getFirst();
     }
 
     @Test
-    public void getLast() {
+    public void getLastElement() {
         assertGetElement(linkedList.size() - 1, linkedList.getLast());
         assertTrue(linkedList.add(VALUE_TEST));
         assertEquals(VALUE_TEST, linkedList.getLast());
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void getLastFromEmpty() {
+    public void whenGetLastElementFromEmptyThenThrowNoSuchElementException() {
         linkedList.clear();
         linkedList.getLast();
     }
 
     @Test
-    public void removeFirst() {
+    public void removeFirstElementReturnIt() {
         String element0 = linkedList.getFirst();
         String element1 = linkedList.get(1);
         assertEquals(element0, linkedList.removeFirst());
@@ -132,13 +132,13 @@ public class MySimpleLinkedListTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void removeFirstFromEmpty() {
+    public void whenRemoveFirstElementFromEmptyThenThrowNoSuchElementException() {
         linkedList.clear();
         linkedList.removeFirst();
     }
 
     @Test
-    public void removeLast() {
+    public void removeLastElementReturnIt() {
         String lastElement = linkedList.getLast();
         assertEquals(lastElement, linkedList.removeLast());
         assertSize(4);
@@ -150,13 +150,13 @@ public class MySimpleLinkedListTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void removeLastFromEmpty() {
+    public void whenRemoveLastElementFromEmptyThenThrowNoSuchElementException() {
         linkedList.clear();
         linkedList.removeLast();
     }
 
     @Test
-    public void remove() {
+    public void removeElementByIndexReturnIt() {
         String oldEl = linkedList.get(2);
         String newEl = linkedList.get(3);
         assertEquals(oldEl, linkedList.remove(2));
@@ -165,12 +165,12 @@ public class MySimpleLinkedListTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void removeByIllegalIndex() {
+    public void whenRemoveElementByIllegalIndexThenThrowIndexOutOfBoundsException() {
         linkedList.remove(ILLEGAL_INDEX);
     }
 
     @Test
-    public void contains() {
+    public void ifContainElementThenReturnTrueElseFalse() {
         assertTrue(linkedList.contains(VALUE_4));
         assertTrue(linkedList.contains(VALUE_2));
         assertFalse(linkedList.contains(VALUE_NULL));
@@ -180,7 +180,7 @@ public class MySimpleLinkedListTest {
     }
 
     @Test
-    public void size() {
+    public void sizeReturnActualSize() {
         assertSize(5);
         linkedList.remove(2);
         assertSize(4);
@@ -191,14 +191,14 @@ public class MySimpleLinkedListTest {
     }
 
     @Test
-    public void clear() {
+    public void clearSetSize0() {
         assertSize(5);
         linkedList.clear();
         assertSize(0);
     }
 
     @Test
-    public void indexOf() {
+    public void indexOfReturnActualIndexOfElement() {
         assertEquals(0, linkedList.indexOf(linkedList.get(0)));
         assertEquals(linkedList.size() - 1, linkedList.indexOf(linkedList.get(linkedList.size() - 1)));
         linkedList.add(2, VALUE_1);
