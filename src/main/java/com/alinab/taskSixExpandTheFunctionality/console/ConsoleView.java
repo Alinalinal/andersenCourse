@@ -1,6 +1,6 @@
-package com.alinab.taskFiveStructure.console;
+package com.alinab.taskSixExpandTheFunctionality.console;
 
-import com.alinab.taskFiveStructure.controller.OrdersController;
+import com.alinab.taskSixExpandTheFunctionality.controller.OrdersController;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j;
@@ -22,6 +22,7 @@ public class ConsoleView {
     public static void run() {
         log.info("App started execution");
         OrdersController orderController = new OrdersController();
+        orderController.uploadOrder();
 
         try (Scanner reader = new Scanner(System.in)) {
             orderController.showMainMenu();
@@ -49,6 +50,7 @@ public class ConsoleView {
                         break;
                     case STOP_1:
                     case STOP_2:
+                        orderController.saveOrder();
                         log.info("App finished execution");
                         System.exit(0);
                         break;
