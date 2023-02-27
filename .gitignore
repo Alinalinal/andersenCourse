@@ -5,6 +5,7 @@
 
 # Maven
 log/
+ordersStorage/
 target/
 
 *.log
