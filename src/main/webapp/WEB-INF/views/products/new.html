@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New product</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/products}" th:object="${product}">
+    <label for="name">Enter name of product: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+    <br/>
+    <label for="product">Choose type of product: </label>
+    <select th:object="${product}" th:field="*{isFood}" id="product">
+        <option value="true">Food</option>
+        <option value="false">Not food</option>
+    </select>
+    <br/>
+    <label for="product">Choose currency code: </label>
+    <select th:object="${product}" th:field="*{currencyCode}">
+        <option value="UAH">UAH</option>
+        <option value="USD">USD</option>
+        <option value="GEL">GEL</option>
+    </select>
+    <br/>
+    <label for="purchasePrice">Enter a purchase price in format '0.00': </label>
+    <input type="text" th:field="*{purchasePrice}" id="purchasePrice"/>
+    <div style="color:red" th:if="${#fields.hasErrors('purchasePrice')}" th:errors="*{purchasePrice}">
+        Purchase price error</div>
+    <br/>
+    <label for="producedOn">Enter date of manufacture in format 'dd/MM/yyyy': </label>
+    <input type="text" th:field="*{producedOn}" id="producedOn"/>
+    <div style="color:red" th:if="${#fields.hasErrors('producedOn')}" th:errors="*{producedOn}">Produced on error</div>
+    <br/>
+
+    <input type="submit" value="Create!"/>
+</form>
+</body>
+</html>
