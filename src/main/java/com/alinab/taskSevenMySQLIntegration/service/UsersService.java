@@ -1,26 +1,31 @@
 package com.alinab.taskSevenMySQLIntegration.service;
 
+import com.alinab.taskSevenMySQLIntegration.models.Information;
 import com.alinab.taskSevenMySQLIntegration.models.User;
+import com.alinab.taskSevenMySQLIntegration.repositories.OrdersRepository;
 import com.alinab.taskSevenMySQLIntegration.repositories.UsersRepository;
-import lombok.extern.log4j.Log4j;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-@Log4j
 public class UsersService {
 
     private final UsersRepository usersRepository;
+    private final OrdersRepository ordersRepository;
 
     @Autowired
-    public UsersService(UsersRepository usersRepository) {
+    public UsersService(UsersRepository usersRepository, OrdersRepository ordersRepository) {
         this.usersRepository = usersRepository;
+        this.ordersRepository = ordersRepository;
     }
 
     public List<User> findAll() {
@@ -29,15 +34,12 @@ public class UsersService {
 
     @Transactional
     public void save(User user) {
-        log.info("Create a user " + user.getName() + ", email: " + user.getEmail());
-
         usersRepository.save(user);
     }
 
     public User findOne(int id) {
-        log.info("Read from db user with id " + id);
-
         Optional<User> foundUser = usersRepository.findById(id);
+
         if (foundUser.isPresent()) {
             User user = foundUser.get();
             Hibernate.initialize(user.getOrders());
@@ -51,5 +53,28 @@ public class UsersService {
     @Transactional
     public void delete(int id) {
         usersRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void update(int id, User updatedUser) {
+        updatedUser.setId(id);
+        usersRepository.save(updatedUser);
+    }
+
+    public List<Information> getUsersOrderHistory(int id) {
+        List<Object[]> result = usersRepository.getUsersOrderHistory(id);
+        List<Information> informations = new ArrayList<>();
+
+        for (Object[] fields : result) {
+            Information information = new Information();
+            information.setId((int) fields[0]);
+            information.setCreatedAt(((Date) fields[1]).toLocalDate());
+            information.setProcessed((Boolean) fields[2]);
+            information.setTotalSum((BigDecimal) fields[3]);
+            information.setOrder(ordersRepository.findByIdWithProducts((int) fields[4]).orElse(null));
+            informations.add(information);
+        }
+
+        return informations;
     }
 }

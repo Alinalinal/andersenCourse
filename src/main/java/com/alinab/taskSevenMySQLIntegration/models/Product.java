@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"orders"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product implements Serializable {
 

@@ -1,5 +1,6 @@
 package com.alinab.taskSevenMySQLIntegration.controllers;
 
+import com.alinab.taskSevenMySQLIntegration.models.Information;
 import com.alinab.taskSevenMySQLIntegration.models.User;
 import com.alinab.taskSevenMySQLIntegration.service.UsersService;
 import com.alinab.taskSevenMySQLIntegration.util.UserValidator;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -57,5 +59,28 @@ public class UsersController {
     public String delete(@PathVariable("id") int id) {
         usersService.delete(id);
         return "redirect:/users";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", usersService.findOne(id));
+        return "users/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("person") @Valid User user, BindingResult bindingResult,
+                         @PathVariable("id") int id) {
+        if (bindingResult.hasErrors())
+            return "users/edit";
+
+        usersService.update(id, user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/showInfo/{id}")
+    public String showInfo(@PathVariable("id") int id, Model model) {
+        List<Information> list = usersService.getUsersOrderHistory(id);
+        model.addAttribute("info", list);
+        return "users/showInfo";
     }
 }

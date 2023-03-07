@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "User")
@@ -19,6 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {"orders"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements Serializable {
 
@@ -46,26 +46,4 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "orderOwner")
     List<Order> orders;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (id != user.id) return false;
-        if (!Objects.equals(name, user.name)) return false;
-        if (!Objects.equals(dateOfBirth, user.dateOfBirth)) return false;
-        return Objects.equals(email, user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
-    }
 }

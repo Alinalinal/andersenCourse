@@ -3,7 +3,6 @@ package com.alinab.taskSevenMySQLIntegration.service;
 import com.alinab.taskSevenMySQLIntegration.models.Product;
 import com.alinab.taskSevenMySQLIntegration.models.currency.Currency;
 import com.alinab.taskSevenMySQLIntegration.repositories.ProductsRepository;
-import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,6 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-@Log4j
 public class ProductsService {
 
     static int FOOD_SHELF_LIFE = 5;
@@ -32,7 +30,7 @@ public class ProductsService {
         return productsRepository.findAll();
     }
 
-    public Product findOne(int id) {
+    public Product getById(int id) {
         Optional<Product> foundProduct = productsRepository.findById(id);
 
         return foundProduct.orElse(null);
@@ -40,8 +38,6 @@ public class ProductsService {
 
     @Transactional
     public void save(Product product) {
-        log.info("Add a product(s) " + product.getName() + " to the warehouse");
-
         product.setSellingPrice(calcSellingPrice(product));
         product.setShelfLifeDays(calcShelfLifeDays(product));
 

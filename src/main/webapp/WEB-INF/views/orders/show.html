@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+</head>
+<body>
+<h1>Order</h1>
+<p>ID: <span th:text="${order.id}"></span></p>
+<hr/>
+
+<p>Order owner: <a th:href="@{/users/{id}(id=${order.orderOwner.id})}"
+                   th:text="${order.orderOwner.name}">order</a></p>
+<hr/>
+
+<p>Order status: </p>
+<div th:if="${order.isConfirmed()}">
+    <span>Confirmed</span>
+</div>
+<div th:if="${!order.isConfirmed()}">
+    <span>Not confirmed</span>
+</div>
+<hr/>
+
+<h2>Products in your order:</h2>
+
+<div th:if="${order.products.size() == 0}">
+    <span>Order is empty for now</span>
+</div>
+
+<div th:if="${order.products.size() > 0}">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${order.products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.sellingPrice}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<hr/>
+
+<p>Total price: <span th:text="${totalPrice}"></span></p>
+
+<div th:if="${!order.isConfirmed()}">
+    <form th:method="POST" th:action="@{/orders/confirmOrder/{orderId}(orderId=${order.getId()})}">
+        <button type="submit">Confirm Order</button>
+    </form>
+
+    <form th:method="DELETE" th:action="@{/orders/deleteOrder/{orderId}(orderId=${order.getId()})}">
+        <button type="submit">Delete Order</button>
+    </form>
+
+    <form th:method="GET" th:action="@{/orders/editOrder/{orderId}(orderId=${order.getId()})}">
+        <button type="submit">Edit Order</button>
+    </form>
+</div>
+
+</body>
+</html>

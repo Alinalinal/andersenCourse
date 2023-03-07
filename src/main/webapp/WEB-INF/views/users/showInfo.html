@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Information List</title>
+</head>
+<body>
+
+<div th:if="${info.size() == 0}">
+    <span>No saved customer history</span>
+</div>
+
+<div th:if="${info.size() > 0}">
+    <h1>Information List</h1>
+    <p>User: <a th:text="${info.get(0).order.orderOwner.name}">order</a></p>
+    <hr/>
+    <p>Order: </p>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Created At</th>
+            <th>Processed</th>
+            <th>Total Sum</th>
+            <th>Order ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="info : ${info}">
+            <td th:text="${info.id}"></td>
+            <td th:text="${info.createdAt}"></td>
+            <td th:text="${info.processed}"></td>
+            <td th:text="${info.totalSum}"></td>
+            <td th:text="${info.order.id}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<hr/>
+</body>
+</html>

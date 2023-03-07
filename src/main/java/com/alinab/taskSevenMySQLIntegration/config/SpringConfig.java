@@ -98,7 +98,7 @@ public class SpringConfig implements WebMvcConfigurer {
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(hibernateProperties());
 
-        return em; 
+        return em;
     }
 
     @Bean
