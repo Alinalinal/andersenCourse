@@ -28,7 +28,7 @@ public class ProductsController {
         return "products/index";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/create")
     public String newProduct(@ModelAttribute("product") Product product) {
         return "products/new";
     }

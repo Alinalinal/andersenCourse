@@ -32,9 +32,22 @@ public class UsersController {
         return "users/index";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/create")
     public String newUser(@ModelAttribute("user") User user) {
         return "users/new";
+    }
+
+    @GetMapping("/{id}")
+    public String show(@PathVariable("id") int id, Model model) {
+
+        model.addAttribute("user", usersService.findOne(id));
+        return "users/show";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", usersService.findOne(id));
+        return "users/edit";
     }
 
     @PostMapping()
@@ -48,25 +61,6 @@ public class UsersController {
         return "redirect:/users";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-
-        model.addAttribute("user", usersService.findOne(id));
-        return "users/show";
-    }
-
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
-        usersService.delete(id);
-        return "redirect:/users";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", usersService.findOne(id));
-        return "users/edit";
-    }
-
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") int id) {
@@ -77,7 +71,13 @@ public class UsersController {
         return "redirect:/users";
     }
 
-    @GetMapping("/showInfo/{id}")
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+        usersService.delete(id);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{id}/info")
     public String showInfo(@PathVariable("id") int id, Model model) {
         List<Information> list = usersService.getUsersOrderHistory(id);
         model.addAttribute("info", list);

@@ -19,19 +19,19 @@
 <div th:if="${user.getOrders().size() > 0}">
     <span>All user's orders:</span>
     <div th:each="order : ${user.getOrders()}">
-        <a th:href="@{/orders/showOrder/{id}(id=${order.getId()})}"
+        <a th:href="@{/orders/{id}(id=${order.getId()})}"
            th:text="${'Order id: ' + order.getId()}">order</a>
     </div>
 </div>
 <br/>
 
-<form th:method="GET" th:action="@{/orders/new/{userId}(userId=${user.getId()})}">
+<form th:method="GET" th:action="@{/orders/create/{userId}(userId=${user.getId()})}">
     <input type="submit" value="Place a new order"/>
 </form>
 
 <hr/>
 
-<form th:method="GET" th:action="@{/users/{id}/edit(id=${user.getId()})}">
+<form th:method="GET" th:action="@{/users/edit/{id}(id=${user.getId()})}">
     <input type="submit" value="Edit user's info"/>
 </form>
 

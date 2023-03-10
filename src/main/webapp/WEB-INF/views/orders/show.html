@@ -49,15 +49,15 @@
 <p>Total price: <span th:text="${totalPrice}"></span></p>
 
 <div th:if="${!order.isConfirmed()}">
-    <form th:method="POST" th:action="@{/orders/confirmOrder/{orderId}(orderId=${order.getId()})}">
+    <form th:method="POST" th:action="@{/orders/{orderId}/confirm(orderId=${order.getId()})}">
         <button type="submit">Confirm Order</button>
     </form>
 
-    <form th:method="DELETE" th:action="@{/orders/deleteOrder/{orderId}(orderId=${order.getId()})}">
+    <form th:method="DELETE" th:action="@{/orders/{orderId}(orderId=${order.getId()})}">
         <button type="submit">Delete Order</button>
     </form>
 
-    <form th:method="GET" th:action="@{/orders/editOrder/{orderId}(orderId=${order.getId()})}">
+    <form th:method="PATCH" th:action="@{/orders/{orderId}(orderId=${order.getId()})}">
         <button type="submit">Edit Order</button>
     </form>
 </div>
