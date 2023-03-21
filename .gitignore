@@ -5,7 +5,11 @@
 
 # Maven
 log/
+ordersStorage/
 target/
+
+*.log
+*.txt
 
 # Mac
 .DS_Store
