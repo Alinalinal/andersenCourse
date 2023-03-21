@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Are you sure?</title>
+</head>
+<body>
+
+<p th:text="${'Are you sure you want to create a new order?'}">VALUE</p>
+
+<form th:method="POST" th:action="@{/orders/create/users/{userId}(userId=${userId})}" th:object="${order}">
+    <input type="submit" value="Yes"/>
+</form>
+
+<form th:method="GET" th:action="@{/users/{userId}(userId=${userId})}">
+    <input type="submit" value="No"/>
+</form>
+
+</body>
+</html>

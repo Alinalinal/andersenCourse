@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New order</title>
+</head>
+<body>
+<h1>New Order</h1>
+
+<p>Order owner: <span th:text="${order.orderOwner.name}"></span></p>
+
+<h2>Products in your order:</h2>
+
+<div th:if="${order.products.size() == 0}">
+    <span>Order is empty for now</span>
+</div>
+
+<div th:if="${order.products.size() > 0}">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${order.products}">
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.sellingPrice}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p>Total price: <span th:text="${totalPrice}"></span></p>
+    <hr/>
+
+    <form th:method="DELETE" th:action="@{/orders/{orderId}/product(orderId=${order.getId()})}">
+        <h3>Delete Product from your order:</h3>
+        <label>Name:</label>
+        <label>
+            <select name="productId">
+                <option th:each="product : ${order.products}" th:value="${product.getUuid()}" th:text="${product.name}"></option>
+            </select>
+        </label>
+
+        <button type="submit">Delete from Order</button>
+    </form>
+</div>
+<hr/>
+
+<h2>Choose Products from this list:</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${allProducts}">
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.sellingPrice}"></td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+
+<form th:method="POST" th:action="@{/orders/{orderId}/product(orderId=${order.getId()})}">
+    <h3>Add Product to your order:</h3>
+    <label>Name:</label>
+    <label>
+        <select name="productId">
+            <option th:each="product : ${allProducts}" th:value="${product.getUuid()}" th:text="${product.name}"></option>
+        </select>
+    </label>
+
+    <button type="submit">Add to Order</button>
+</form>
+<hr/>
+
+<div th:if="${order.products.size() > 0}">
+    <form th:method="POST" th:action="@{/orders/{orderId}/confirm(orderId=${order.getId()})}">
+        <button type="submit">Confirm Order</button>
+    </form>
+</div>
+
+<form th:method="DELETE" th:action="@{/orders/{orderId}(orderId=${order.getId()})}">
+    <button type="submit">Delete Order</button>
+</form>
+
+</body>
+</html>

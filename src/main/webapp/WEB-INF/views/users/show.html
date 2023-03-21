@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+
+<p th:text="${'User id: ' + user.getId()}">VALUE</p>
+<p th:text="${'Name: ' + user.getName()}">VALUE</p>
+<p th:text="${'Date of birth: ' + user.getDateOfBirth()}">VALUE</p>
+<p th:text="${'Email: ' + user.getEmail()}">VALUE</p>
+<hr/>
+
+<div th:if="${user.getOrders().size() < 1}">
+    <span>User hasn't made any order yet</span>
+</div>
+
+<div th:if="${user.getOrders().size() > 0}">
+    <span>All user's orders:</span>
+    <div th:each="order : ${user.getOrders()}">
+        <a th:href="@{/orders/{id}(id=${order.getId()})}"
+           th:text="${'Order id: ' + order.getId()}">order</a>
+    </div>
+</div>
+<br/>
+
+<form th:method="GET" th:action="@{/orders/create/{userId}(userId=${user.getId()})}">
+    <input type="submit" value="Place a new order"/>
+</form>
+
+<hr/>
+
+<form th:method="GET" th:action="@{/users/edit/{id}(id=${user.getId()})}">
+    <input type="submit" value="Edit user's info"/>
+</form>
+
+<form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+    <input type="submit" value="Delete user" onclick=""/>
+</form>
+
+</body>
+</html>

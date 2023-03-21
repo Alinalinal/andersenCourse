@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All products</title>
+</head>
+<body>
+
+<h3> - All products in stock - </h3>
+
+<div th:each="product : ${products}">
+    <a th:text="${'id: ' + product.getUuid() + ' - ' + product.getName() + ', price: ' + product.getSellingPrice() +
+    ' UAH, produced: ' + product.getProducedOn()}">product</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/products/create">Add new product</a>
+
+</body>
+</html>
